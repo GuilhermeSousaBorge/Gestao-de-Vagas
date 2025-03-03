@@ -24,6 +24,7 @@ public class CompanyController {
             var response = this.companyService.createCompany(request);
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         }catch (Exception e){
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }

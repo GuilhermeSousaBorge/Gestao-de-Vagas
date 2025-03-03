@@ -17,14 +17,20 @@ public class CompanyEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
     private String name;
+
     @Email(message = "Insira um email valido!")
     private String email;
-    @Length(min = 6, max = 8, message = "O campo [senha] deve conter 6 a 8 caracteres")
+
+    @Length(min = 6, max = 100, message = "O campo [senha] deve conter 6 a 8 caracteres")
     private String password;
+
     @Pattern(regexp = "\\S+", message = "[username] invalido")
-    private String userName;
+    private String username;
+
     private String webSite;
+
     private String description;
 
     @CreationTimestamp
