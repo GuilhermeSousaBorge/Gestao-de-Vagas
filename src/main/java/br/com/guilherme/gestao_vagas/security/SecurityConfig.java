@@ -1,5 +1,6 @@
 package br.com.guilherme.gestao_vagas.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -7,17 +8,24 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
 public class SecurityConfig {
+
+    @Autowired
+    private SecurityFilter securityFilter;
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/api/candidate", "/api/company", "/api/auth/company").permitAll()
-                        .anyRequest().authenticated();
+                    auth.requestMatchers("/api/candidate").permitAll()
+                            .requestMatchers("/api/company").permitAll()
+                            .requestMatchers("/api/auth/company").permitAll()
+                            .anyRequest().authenticated();
                 })
+                .addFilterBefore(securityFilter, BasicAuthenticationFilter.class);
         ;
         return http.build();
     }

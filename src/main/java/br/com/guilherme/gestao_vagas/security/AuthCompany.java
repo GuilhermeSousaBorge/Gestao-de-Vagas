@@ -11,6 +11,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.naming.AuthenticationException;
+import java.time.Duration;
+import java.time.Instant;
 
 @Service
 public class AuthCompany {
@@ -35,6 +37,7 @@ public class AuthCompany {
 
         Algorithm algorithm = Algorithm.HMAC256(securityToken);
         return JWT.create().withIssuer("matchjobs")
+                .withExpiresAt(Instant.now().plus(Duration.ofHours(2)))
                 .withSubject(company.getId().toString()).sign(algorithm);
     }
 }
